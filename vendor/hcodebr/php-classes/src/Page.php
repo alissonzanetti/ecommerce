@@ -13,13 +13,14 @@ class Page {
   ];
 
   //magic method construct
-  public function __construct($opts = array()){
+  //$tpl_dir = "/views/ by default
+  public function __construct($opts = array(), $tpl_dir = "/views/"){
 
     //Merge Arrays
     //array_merge () = Attention the order, last always override the first
     $this->options = array_merge($this->defaults, $opts);
     $config = array(
-      "tpl_dir"   => $_SERVER["DOCUMENT_ROOT"] . "/views/",
+      "tpl_dir"   => $_SERVER["DOCUMENT_ROOT"] . $tpl_dir,
       "cache_dir" => $_SERVER["DOCUMENT_ROOT"] . "/views-cache/",
       "debug"     => false //set to false to improve the speed
     );
