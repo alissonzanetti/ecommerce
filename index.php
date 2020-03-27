@@ -2,15 +2,22 @@
 
 require_once("vendor/autoload.php");
 
-$app = new \Slim\Slim();
+use \Slim\Slim;
+use \Hcode\Page;
+
+$app = new Slim();
 
 $app->config('debug', true);
 
 $app->get('/', function() {
+  $page = new Page();
 
-    $sql = new Hcode\DB\Sql();
-    $results = $sql->select("SELECT * FROM tb_products");
-    echo json_encode($results);
+  //Function __construct will call the header.html page
+
+  //Function setTpl("index") will call the index.html page
+  $page->setTpl("index");
+
+  //Function __destruct will call the footer.html page
 
 });
 
