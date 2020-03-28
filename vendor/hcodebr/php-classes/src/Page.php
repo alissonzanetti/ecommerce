@@ -9,12 +9,17 @@ class Page {
   private $tpl;
   private $options = [];
   private $defaults =[
+    //Adding header/footer enable by default
+    "header"=>true,
+    "footer"=>true,
     "data"=>[]
   ];
 
   //magic method construct
   //$tpl_dir = "/views/ by default
   public function __construct($opts = array(), $tpl_dir = "/views/"){
+
+    //$this->defaults["data"]["session"] = $_SESSION;
 
     //Merge Arrays
     //array_merge () = Attention the order, last always override the first
@@ -32,7 +37,7 @@ class Page {
     $this->setData($this->options["data"]);
 
     //Add the header in the HTML page
-    $this->tpl->draw("header");
+    if ($this->options["header"] === true) $this->tpl->draw("header");
     }
 
   //Method to insert data in another methods
@@ -51,7 +56,7 @@ class Page {
   //magic method destruct
    public function __destruct(){
     //Add the footer in the HTML page
-    $this->tpl->draw("footer");
+    if ($this->options["footer"] === true) $this->tpl->draw("footer");
   }
 
 }
