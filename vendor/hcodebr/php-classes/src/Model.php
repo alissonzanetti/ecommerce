@@ -18,7 +18,9 @@ class Model {
     */
     switch ($method) {
       case 'get':
-          return $this->values[$fieldName];
+          //idcategory is only defined at the database
+          //So, getidcategory will not return. To get around, use NULL
+          return (isset($this->values[$fieldName])) ? $this->values[$fieldName] : NULL;
         break;
 
       case 'set':
