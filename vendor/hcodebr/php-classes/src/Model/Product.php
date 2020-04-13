@@ -14,6 +14,17 @@ class Product extends Model{
     return $sql->select("SELECT * FROM tb_products ORDER BY desproduct");
   }
 
+  //Method listAll doesn't have desphoto
+  //It cames from getValues()
+  public static function checkList($list){
+    foreach ($list as &$row) {
+      $p = new Product();
+      $p->setData($row);
+      $row = $p->getValues();
+    }
+    return $list;
+  }
+
   //Save products
   public function save(){
 		$sql = new Sql();
@@ -98,6 +109,7 @@ class Product extends Model{
       $this->checkPhoto();
     }
 
+}
 }
 
  ?>
