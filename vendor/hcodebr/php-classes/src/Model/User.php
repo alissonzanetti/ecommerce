@@ -20,6 +20,39 @@ class User extends Model{
 	const ERROR_REGISTER = "UserErrorRegister";
 	const SUCCESS = "UserSucesss";
 
+  public static function getFromSession(){
+    $user = new User();
+    if(isset($_SESSION[User::SESSION]) && (int)$_SESSION[User::SESSION]['iduser'] > 0){
+      $user->setData($_SESSION[User::SESSION]);
+    }
+    return $user;
+  }
+
+  public static function checkLogin($inadmin = true){
+    //If not logged yet
+    //OR it is false
+    //OR iduser is empty by casting (int type)
+    if(
+      !isset($_SESSION[User::SESSION])
+      ||
+      !$_SESSION[User::SESSION]
+      ||
+      !(int)$_SESSION[User::SESSION]["iduser"] > 0
+    ){
+      //Not logged
+      return false;
+    } else {
+      //Is it a admin route?
+      if($inadmin === true && (bool)$_SESSION[User::SESSION]['inadmin'] === true) {
+        return true;
+      } else if ($inadmin === false) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
   public static function login($login, $password){
 
     $sql = new Sql();
@@ -58,15 +91,7 @@ class User extends Model{
     //OR it is false
     //OR iduser is empty by casting (int type)
     //OR iduser is not an admin ($inadmin)
-    if(
-      !isset($_SESSION[User::SESSION])
-      ||
-      !$_SESSION[User::SESSION]
-      ||
-      !(int)$_SESSION[User::SESSION]["iduser"] > 0
-      ||
-      (bool)$_SESSION[User::SESSION]["inadmin"] !== $inadmin
-    ){
+    if(User::checkLogin($inadmin)){
       header("Location: /admin/login");
       //Exit to avoid redirection
       exit;
@@ -215,7 +240,6 @@ class User extends Model{
         ":idrecovery"=>$idrecovery
     ));
   }
-
 
   	public function setPassword($password){
   		$sql = new Sql();
