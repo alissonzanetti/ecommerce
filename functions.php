@@ -1,10 +1,23 @@
 <?php
 
-function formatPrice(float $vlprice){
-  //first separator ","
-  //second separator "."
-  return number_format($vlprice, 2, ",", ".");
+use \Hcode\Model\User;
+
+//function formatPrice(float $vlprice){
+function formatPrice($vlprice){
+    //first separator ","
+    //second separator "."
+    return number_format($vlprice, 2, ",", ".");
 }
 
+function checkLogin($inadmin = true){
+  return User::checkLogin($inadmin);
+}
+
+function getUserName(){
+  $user = User::getFromSession();
+  //var_dump($user);
+  //exit;
+  return $user->getdesperson();
+}
 
  ?>
