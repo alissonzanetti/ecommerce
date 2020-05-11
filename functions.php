@@ -6,6 +6,7 @@ use \Hcode\Model\User;
 function formatPrice($vlprice){
     //first separator ","
     //second separator "."
+    if(!$vlprice > 0) $vlprice = 0;
     return number_format($vlprice, 2, ",", ".");
 }
 
