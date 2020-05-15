@@ -72,14 +72,15 @@ class Cart extends Model {
           :vlfreight,
           :nrdays
       )
-    ", [
-      ':idcart'=>$this->getidcart(),
-			':dessessionid'=>$this->getdessessionid(),
-			':iduser'=>$this->getiduser(),
-			':deszipcode'=>$this->getdeszipcode(),
-			':vlfreight'=>$this->getvlfreight(),
-			':nrdays'=>$this->getnrdays()
-		]);
+    	", [
+      	':idcart'=>$this->getidcart(),
+				':dessessionid'=>$this->getdessessionid(),
+				':iduser'=>$this->getiduser(),
+				':deszipcode'=>$this->getdeszipcode(),
+				':vlfreight'=>$this->getvlfreight(),
+				':nrdays'=>$this->getnrdays()
+			]
+		);
 		$this->setData($results[0]);
 	}
 
@@ -157,11 +158,8 @@ class Cart extends Model {
 	public function setFreight($nrzipcode){
 		$nrzipcode = str_replace('-', '', $nrzipcode);
 		$totals = $this->getProductsTotals();
-
 		if($totals['vlheight'] < 2) $totals['vlheight'] = 2;
 		if($totals['vllength'] < 16) $totals['vllength'] = 16;
-
-
 		if($totals['nrqtd'] > 0){
 			$qs = http_build_query([
 					'nCdEmpresa'=>'',
@@ -179,11 +177,8 @@ class Cart extends Model {
 					'nVlValorDeclarado'=>$totals['vlprice'],
 					'sCdAvisoRecebimento'=>'S'
 				]);
-
-				$xml = simplexml_load_file("http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx/CalcPrecoPrazo?".$qs);
-
-				$result = $xml->Servicos->cServico;
-
+			$xml = simplexml_load_file("http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx/CalcPrecoPrazo?".$qs);
+			$result = $xml->Servicos->cServico;
 			if($result->MsgErro != ''){
 				Cart::setMsgError($result->MsgErro);
 			} else {

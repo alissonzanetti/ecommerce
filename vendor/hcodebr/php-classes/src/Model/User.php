@@ -313,6 +313,10 @@ class User extends Model{
     ]);
   }
 
+  public function setToSession(){
+		$_SESSION[User::SESSION] = $this->getValues();
+	}
+
 }
 
  ?>
